@@ -3,6 +3,10 @@ plugins {
 }
 
 android {
+
+    dataBinding {
+        enabled = true
+    }
     namespace 'com.example.tele_clima_20125424'
     compileSdk 34
 

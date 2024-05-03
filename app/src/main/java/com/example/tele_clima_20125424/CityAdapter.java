@@ -1,7 +1,5 @@
 package com.example.tele_clima_20125424;
 
-import com.example.tele_clima_20125424.dto.CityDTO;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,21 +21,20 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
 
     public CityAdapter(Context context) {
         this.context = context;
-        cities = new ArrayList<>();
+        this.cities = new ArrayList<>();
     }
 
-    public void addCities(List<CityDTO> newCities) {
-        cities.clear(); // Limpiar la lista antes de agregar nuevos resultados
-        cities.add(newCities);
-        notifyDataSetChanged(); // Notificar al RecyclerView que se han agregado nuevos elementos
+    public void setCities(List<CityDTO> cities) {
+        this.cities = cities;
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public CityViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        ItemCityBinding binding = ItemCityBinding.inflate(layoutInflater, parent, false);
-        return new CityViewHolder(binding);
+        ItemCityBinding itemBinding = ItemCityBinding.inflate(layoutInflater, parent, false);
+        return new CityViewHolder(itemBinding);
     }
 
     @Override
@@ -51,8 +48,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
         return cities.size();
     }
 
-    static class CityViewHolder extends RecyclerView.ViewHolder {
-
+    public static class CityViewHolder extends RecyclerView.ViewHolder {
         private final ItemCityBinding binding;
 
         public CityViewHolder(ItemCityBinding binding) {
