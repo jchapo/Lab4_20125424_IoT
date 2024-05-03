@@ -1,0 +1,60 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/light_blue"
+    tools:context=".Navigation.GeolocalizationFragment">
+
+
+<!-- Primera parte: TextView "Buscar Geolocalización" -->
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Buscar Geolocalización"
+    android:gravity="center"
+    android:textStyle="bold"
+    android:textColor="@color/white"
+    android:textSize="20sp"
+    android:padding="16dp"/>
+
+<!-- Segunda parte: LinearLayout horizontal con TextInputEditText y Button -->
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:padding="16dp">
+
+    <!-- EditText -->
+    <EditText
+        android:id="@+id/editTextCiudad"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:textSize="15dp"
+        android:layout_weight="1"
+        android:background="@drawable/rounded_edittext_bg"
+        android:hint="Ciudad"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:paddingBottom="8dp"/>
+    <!-- Button -->
+    <Button
+        android:id="@+id/botonBuscarGeolocalizacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Buscar"/>
+
+</LinearLayout>
+
+<!-- Tercera parte: RecyclerView -->
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/recyclerViewGeo"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:padding="16dp"/>
+
+</LinearLayout>
