@@ -1,6 +1,7 @@
 package com.example.tele_clima_20125424.Navigation;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +11,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.tele_clima_20125424.CityAdapter;
-import com.example.tele_clima_20125424.R;
 import com.example.tele_clima_20125424.databinding.FragmentGeolocalizationBinding;
 import com.example.tele_clima_20125424.dto.CityDTO;
 import com.example.tele_clima_20125424.services.OWTMService;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,21 +51,21 @@ public class GeolocalizationFragment extends Fragment {
 
     public void createRetrofitService() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.openweathermap.org/")
+                .baseUrl("http://api.openweathermap.org/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         owtmService = retrofit.create(OWTMService.class);
     }
 
-    public void cargarListaWebService() {
+    public void cargarListaWebService(){
         String cityToSearch = binding.editTextCiudad.getText().toString();
-        owtmService.getCityDetails(cityToSearch, "8dd6fc3be19ceb8601c2c3e811c16cf1").enqueue(new Callback<CityDTO>() {
+        owtmService.getCityDetails(cityToSearch, 1, "8dd6fc3be19ceb8601c2c3e811c16cf1").enqueue(new Callback<List<CityDTO>>() {
             @Override
-            public void onResponse(Call<CityDTO> call, Response<CityDTO> response) {
+            public void onResponse(Call<List<CityDTO>> call, Response<List<CityDTO>> response) {
                 if (response.isSuccessful()) {
-                    CityDTO city = response.body();
-                    if (city != null) {
-                        cityAdapter.addCity(city);
+                    List<CityDTO> cities = response.body();
+                    if (cities != null && !cities.isEmpty()) {
+                        cityAdapter.addCities(cities); // Agregar las ciudades al adaptador
                     } else {
                         Toast.makeText(requireContext(), "No se encontraron datos para esa ciudad", Toast.LENGTH_SHORT).show();
                     }
@@ -73,9 +75,13 @@ public class GeolocalizationFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<CityDTO> call, Throwable t) {
-                Toast.makeText(requireContext(), "Error de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<List<CityDTO>> call, Throwable t) {
+                Log.d("juan", t.getMessage());
+                Toast.makeText(requireContext(), "Error al obtener los datos", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+
+
 }

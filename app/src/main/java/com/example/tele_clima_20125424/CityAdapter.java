@@ -26,9 +26,10 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
         cities = new ArrayList<>();
     }
 
-    public void addCity(CityDTO city) {
-        cities.add(city);
-        notifyDataSetChanged(); // Notificar al RecyclerView que se ha agregado un nuevo elemento
+    public void addCities(List<CityDTO> newCities) {
+        cities.clear(); // Limpiar la lista antes de agregar nuevos resultados
+        cities.add(newCities);
+        notifyDataSetChanged(); // Notificar al RecyclerView que se han agregado nuevos elementos
     }
 
     @NonNull
