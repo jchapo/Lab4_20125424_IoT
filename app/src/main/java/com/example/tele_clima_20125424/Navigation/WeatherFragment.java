@@ -59,7 +59,13 @@ public class WeatherFragment extends Fragment {
 
 
     private void setupButton() {
-        binding.botonBuscarClima.setOnClickListener(v -> cargarListaWebService());
+        binding.botonBuscarClima.setOnClickListener(v -> {
+            binding.botonBuscarClima.setEnabled(false); // Deshabilitar el botón
+            navigationActivityViewModel.setEnableNavigation(false);
+            cargarListaWebService();
+            binding.editTextLongitudClima.setText("");
+            binding.editTextLatitudClima.setText("");
+        });
     }
 
     public void createRetrofitService() {
@@ -79,19 +85,21 @@ public class WeatherFragment extends Fragment {
         owtmService.getClimaDetails(latitudeclimaToSearch, longitudeclimaToSearch, "8dd6fc3be19ceb8601c2c3e811c16cf1").enqueue(new Callback<ClimaDTO>() {
             @Override
             public void onResponse(Call<ClimaDTO> call, Response<ClimaDTO> response) {
+                binding.botonBuscarClima.setEnabled(true); // Habilitar el botón
                 if (response.isSuccessful()) {
                     ClimaDTO clima = response.body();
                     List<ClimaDTO> climas = navigationActivityViewModel.getClimas();
                     if (climas == null) {
                         climas = new ArrayList<>();
                     }
-                    climas.add(0, clima); // Agregar las nuevas ciudades al principio del arreglo climas
+                    climas.add(0, clima); // Agregar el nuevo clima al principio de la lista de climas
                     for (ClimaDTO c : climas) {
                         Log.d("ClimaData", "Clima: " + c.getName() + ", Latitud: " + c.getCoord().getLat() + ", Longitud: " + c.getCoord().getLon());
                     }
                     if (clima != null) {
-                        climaAdapter.setClimas(climas); // Actualizar el adaptador con la lista actualizada de ciudades
+                        climaAdapter.setClimas(climas); // Actualizar el adaptador con la lista actualizada de climas
                         navigationActivityViewModel.setClimas(climas);
+                        navigationActivityViewModel.setEnableNavigation(true);
                     } else {
                         Toast.makeText(requireContext(), "No se encontraron datos para esa ciudad", Toast.LENGTH_SHORT).show();
                     }
@@ -107,9 +115,9 @@ public class WeatherFragment extends Fragment {
                 }
             }
 
-
             @Override
             public void onFailure(Call<ClimaDTO> call, Throwable t) {
+                binding.botonBuscarClima.setEnabled(true); // Habilitar el botón en caso de falla
                 Log.d("juan", t.getMessage());
                 Toast.makeText(requireContext(), "Error al obtener los datos", Toast.LENGTH_SHORT).show();
             }

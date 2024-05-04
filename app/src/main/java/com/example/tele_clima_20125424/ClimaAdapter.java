@@ -66,9 +66,9 @@ public class ClimaAdapter extends RecyclerView.Adapter<ClimaAdapter.ClimaViewHol
                 binding.ciudadClimaTextView.setText("Desconocido");
             }
 
-            binding.temperaturaClimaTextView.setText(String.valueOf(clima.getMain().getTemp()));
-            binding.tempMinClimaTextView.setText(String.valueOf(clima.getMain().getTemp_min()));
-            binding.tempMaxClimaTextView.setText(String.valueOf(clima.getMain().getTemp_max()));
+            binding.temperaturaClimaTextView.setText(String.valueOf(clima.getMain().getTemp())+" K");
+            binding.tempMinClimaTextView.setText(String.valueOf(clima.getMain().getTemp_min())+" K");
+            binding.tempMaxClimaTextView.setText(String.valueOf(clima.getMain().getTemp_max())+" K");
             binding.vientoClimaTextView.setText(String.valueOf(clima.getWind().getSpeed()));
         }
     }

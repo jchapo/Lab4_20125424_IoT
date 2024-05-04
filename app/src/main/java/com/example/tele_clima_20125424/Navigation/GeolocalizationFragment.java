@@ -56,7 +56,12 @@ public class GeolocalizationFragment extends Fragment {
 
 
     private void setupButton() {
-        binding.botonBuscarGeolocalizacion.setOnClickListener(v -> cargarListaWebService());
+        binding.botonBuscarGeolocalizacion.setOnClickListener(v -> {
+            binding.botonBuscarGeolocalizacion.setEnabled(false); // Deshabilitar el botón
+            navigationActivityViewModel.setEnableNavigation(false);
+            cargarListaWebService();
+            binding.editTextCiudad.setText("");
+        });
     }
 
     public void createRetrofitService() {
@@ -72,6 +77,7 @@ public class GeolocalizationFragment extends Fragment {
         owtmService.getCityDetails(cityToSearch, 1, "8dd6fc3be19ceb8601c2c3e811c16cf1").enqueue(new Callback<List<CityDTO>>() {
             @Override
             public void onResponse(Call<List<CityDTO>> call, Response<List<CityDTO>> response) {
+                binding.botonBuscarGeolocalizacion.setEnabled(true); // Habilitar el botón
                 if (response.isSuccessful()) {
                     List<CityDTO> city = response.body();
                     List<CityDTO> cities = navigationActivityViewModel.getCities();
@@ -85,6 +91,7 @@ public class GeolocalizationFragment extends Fragment {
                     if (city != null && !city.isEmpty()) {
                         cityAdapter.setCities(cities); // Actualizar el adaptador con la lista actualizada de ciudades
                         navigationActivityViewModel.setCities(cities);
+                        navigationActivityViewModel.setEnableNavigation(true);
                     } else {
                         Toast.makeText(requireContext(), "No se encontraron datos para esa ciudad", Toast.LENGTH_SHORT).show();
                     }
@@ -93,9 +100,9 @@ public class GeolocalizationFragment extends Fragment {
                 }
             }
 
-
             @Override
             public void onFailure(Call<List<CityDTO>> call, Throwable t) {
+                binding.botonBuscarGeolocalizacion.setEnabled(true); // Habilitar el botón en caso de falla
                 Log.d("juan", t.getMessage());
                 Toast.makeText(requireContext(), "Error al obtener los datos", Toast.LENGTH_SHORT).show();
             }

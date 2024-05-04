@@ -13,6 +13,7 @@ import com.example.tele_clima_20125424.dto.ClimaDTO;
 import com.example.tele_clima_20125424.services.OWTMService;
 import com.example.tele_clima_20125424.viewModels.NavigationActivityViewModel;
 
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -24,9 +25,6 @@ import java.util.List;
 import java.util.Random;
 
 public class NavigationActivity extends AppCompatActivity {
-    ActivityNavigationBinding binding;
-    List<CityDTO> cities = new ArrayList<>();
-    List<ClimaDTO> clima = new ArrayList<>();
     NavigationActivityViewModel navigationActivityViewModel;
 
     @Override
@@ -35,9 +33,6 @@ public class NavigationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_navigation);
         ActivityNavigationBinding binding = ActivityNavigationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        // Inicializar ViewModel
-        navigationActivityViewModel = new ViewModelProvider(this).get(NavigationActivityViewModel.class);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(binding.fragmentContainer.getId(), new GeolocalizationFragment());
@@ -57,5 +52,24 @@ public class NavigationActivity extends AppCompatActivity {
                     .commit();
         });
 
+        // Observar el LiveData para actualizar los botones y su color de fondo
+        navigationActivityViewModel = new ViewModelProvider(this).get(NavigationActivityViewModel.class);
+        navigationActivityViewModel.getEnableNavigation().observe(this, enable -> {
+            binding.buttonGeolocalizacion.setEnabled(enable);
+            binding.buttonClima.setEnabled(enable);
+
+            if (enable) {
+                // Si la navegación está habilitada, establece el color de fondo predeterminado
+                binding.buttonGeolocalizacion.setBackgroundColor(ContextCompat.getColor(this, android.R.color.white));
+                binding.buttonClima.setBackgroundColor(ContextCompat.getColor(this, android.R.color.white));
+            } else {
+                // Si la navegación está deshabilitada, establece el color de fondo como amarillo
+                binding.buttonGeolocalizacion.setBackgroundColor(ContextCompat.getColor(this, android.R.color.darker_gray));
+                binding.buttonClima.setBackgroundColor(ContextCompat.getColor(this, android.R.color.darker_gray));
+            }
+        });
+
+
     }
+
 }

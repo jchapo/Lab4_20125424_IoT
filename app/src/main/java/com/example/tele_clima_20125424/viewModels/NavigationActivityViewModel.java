@@ -1,5 +1,6 @@
 package com.example.tele_clima_20125424.viewModels;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -12,6 +13,15 @@ public class NavigationActivityViewModel extends ViewModel {
 
     private List<ClimaDTO> climas;
     private List<CityDTO> cities;
+    private MutableLiveData<Boolean> enableNavigation = new MutableLiveData<>();
+
+    public LiveData<Boolean> getEnableNavigation() {
+        return enableNavigation;
+    }
+
+    public void setEnableNavigation(boolean enable) {
+        enableNavigation.setValue(enable);
+    }
 
     public List<CityDTO> getCities() {
         return cities;
