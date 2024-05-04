@@ -25,55 +25,86 @@
             android:padding="16dp"
             android:orientation="vertical">
 
-            <!-- TextView for "ciudad" -->
-            <TextView
-                android:id="@+id/ciudadTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ciudad"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:padding="8dp"/>
-
-            <!-- Horizontal Linear Layout inside Vertical Linear Layout -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <!-- TextView for "Latitud" -->
+                <!-- TextView for "ciudad" -->
+                <TextView
+                    android:id="@+id/ciudadClimaTextView"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Ciudad"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:padding="8dp"/>
+
+                <TextView
+                    android:id="@+id/temperaturaClimaTextView"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Temperatura"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:padding="8dp"
+                    android:textAlignment="textEnd"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Lat:"
+                    android:text="Min:"
                     android:textSize="16sp"
                     android:padding="8dp"/>
 
-                <!-- TextView for "Latitud" -->
                 <TextView
-                    android:id="@+id/latitudTextView"
+                    android:id="@+id/tempMinClimaTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Latitud"
+                    android:text="Temp. Min"
                     android:textSize="12sp"
                     android:padding="8dp"/>
 
-                <!-- TextView for "Longitud" -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Lon:"
+                    android:text="Max:"
                     android:textSize="16sp"
                     android:padding="8dp"/>
 
-                <!-- TextView for "Latitud" -->
                 <TextView
-                    android:id="@+id/longitudeTextView"
+                    android:id="@+id/tempMaxClimaTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Longitud"
+                    android:text="Temp. Max"
+                    android:textSize="12sp"
+                    android:padding="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Viento:"
+                    android:textSize="16sp"
+                    android:padding="8dp"/>
+
+                <TextView
+                    android:id="@+id/vientoClimaTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Dirección"
                     android:textSize="12sp"
                     android:padding="8dp"/>
             </LinearLayout>

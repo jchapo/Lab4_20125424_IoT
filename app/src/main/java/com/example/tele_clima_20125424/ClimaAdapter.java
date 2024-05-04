@@ -7,58 +7,60 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.tele_clima_20125424.databinding.ItemCityBinding;
-import com.example.tele_clima_20125424.dto.CityDTO;
+import com.example.tele_clima_20125424.databinding.ItemClimaBinding;
+import com.example.tele_clima_20125424.dto.ClimaDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClimaAdapter extends RecyclerView.Adapter<ClimaAdapter.CityViewHolder> {
+public class ClimaAdapter extends RecyclerView.Adapter<ClimaAdapter.ClimaViewHolder> {
 
-    private List<CityDTO> cities;
+    private List<ClimaDTO> climas;
     private Context context;
 
     public ClimaAdapter(Context context) {
         this.context = context;
-        this.cities = new ArrayList<>();
+        this.climas = new ArrayList<>();
     }
 
-    public void setCities(List<CityDTO> cities) {
-        this.cities = cities;
+    public void setClimas(List<ClimaDTO> climas) {
+        this.climas = climas;
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public CityViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ClimaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        ItemCityBinding itemBinding = ItemCityBinding.inflate(layoutInflater, parent, false);
-        return new CityViewHolder(itemBinding);
+        ItemClimaBinding itemBinding = ItemClimaBinding.inflate(layoutInflater, parent, false);
+        return new ClimaViewHolder(itemBinding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CityViewHolder holder, int position) {
-        CityDTO city = cities.get(position);
-        holder.bind(city);
+    public void onBindViewHolder(@NonNull ClimaViewHolder holder, int position) {
+        ClimaDTO clima = climas.get(position);
+        holder.bind(clima);
     }
 
     @Override
     public int getItemCount() {
-        return cities.size();
+        return climas.size();
     }
 
-    public static class CityViewHolder extends RecyclerView.ViewHolder {
-        private final ItemCityBinding binding;
+    public static class ClimaViewHolder extends RecyclerView.ViewHolder {
+        private final ItemClimaBinding binding;
 
-        public CityViewHolder(ItemCityBinding binding) {
+        public ClimaViewHolder(ItemClimaBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
 
-        public void bind(CityDTO city) {
-            binding.ciudadTextView.setText(city.getName());
-            binding.latitudTextView.setText(String.valueOf(city.getLat()));
-            binding.longitudeTextView.setText(String.valueOf(city.getLon()));
+        public void bind(ClimaDTO clima) {
+            binding.ciudadClimaTextView.setText(clima.getName());
+            binding.temperaturaClimaTextView.setText(String.valueOf(clima.getMain().getTemp()));
+            binding.tempMinClimaTextView.setText(String.valueOf(clima.getMain().getTemp_min()));
+            binding.tempMaxClimaTextView.setText(String.valueOf(clima.getMain().getTemp_max()));
+            binding.vientoClimaTextView.setText(String.valueOf(clima.getWind().getSpeed()));
         }
     }
 }

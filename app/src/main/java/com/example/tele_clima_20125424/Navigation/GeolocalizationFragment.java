@@ -8,12 +8,15 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.tele_clima_20125424.CityAdapter;
 import com.example.tele_clima_20125424.databinding.FragmentGeolocalizationBinding;
 import com.example.tele_clima_20125424.dto.CityDTO;
+import com.example.tele_clima_20125424.dto.ClimaDTO;
 import com.example.tele_clima_20125424.services.OWTMService;
+import com.example.tele_clima_20125424.viewModels.NavigationActivityViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +31,8 @@ public class GeolocalizationFragment extends Fragment {
 
     private CityAdapter cityAdapter;
     FragmentGeolocalizationBinding binding;
+    NavigationActivityViewModel navigationActivityViewModel;
+
     OWTMService owtmService;
     List<CityDTO> cities = new ArrayList<>();
     @Override
@@ -67,6 +72,8 @@ public class GeolocalizationFragment extends Fragment {
             public void onResponse(Call<List<CityDTO>> call, Response<List<CityDTO>> response) {
                 if (response.isSuccessful()) {
                     List<CityDTO> city = response.body();
+                    navigationActivityViewModel = new ViewModelProvider(requireActivity()).get(NavigationActivityViewModel.class);
+                    List<ClimaDTO> climas = navigationActivityViewModel.getClimas();
                     cities.addAll(0, city); // Agregar las nuevas ciudades al principio del arreglo cities
                     for (CityDTO c : cities) {
                         Log.d("CityData", "City: " + c.getName() + ", Latitud: " + c.getLat() + ", Longitud: " + c.getLon());
