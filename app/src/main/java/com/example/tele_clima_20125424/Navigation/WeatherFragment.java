@@ -11,8 +11,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.tele_clima_20125424.CityAdapter;
 import com.example.tele_clima_20125424.ClimaAdapter;
 import com.example.tele_clima_20125424.databinding.FragmentWeatherBinding;
+import com.example.tele_clima_20125424.dto.CityDTO;
 import com.example.tele_clima_20125424.dto.ClimaDTO;
 import com.example.tele_clima_20125424.services.OWTMService;
 import com.example.tele_clima_20125424.viewModels.NavigationActivityViewModel;
@@ -46,9 +48,12 @@ public class WeatherFragment extends Fragment {
     }
 
     private void setupRecyclerView() {
-        climaAdapter = new ClimaAdapter(requireContext());
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
         binding.recyclerViewWeather.setLayoutManager(layoutManager);
+        navigationActivityViewModel = new ViewModelProvider(requireActivity()).get(NavigationActivityViewModel.class);
+        climaAdapter = new ClimaAdapter(getContext()); // Asegúrate de reemplazar CityAdapter con el nombre correcto de tu adaptador
+        List<ClimaDTO> climas = navigationActivityViewModel.getClimas();
+        climaAdapter.setClimas(climas); // Actualizar el adaptador con la lista actualizada de ciudades
         binding.recyclerViewWeather.setAdapter(climaAdapter);
     }
 
@@ -66,19 +71,20 @@ public class WeatherFragment extends Fragment {
     }
 
     public void cargarListaWebService(){
-        //double longitudeclimaToSearch = Double.parseDouble(binding.editTextLongitudClima.getText().toString());
-        //double latitudeclimaToSearch = Double.parseDouble(binding.editTextLatitudClima.getText().toString());
-        double latitudeclimaToSearch = -12.0621065;
-        double longitudeclimaToSearch = -77.0365256;
+        double latitudeclimaToSearch = Double.parseDouble(binding.editTextLatitudClima.getText().toString());
+        double longitudeclimaToSearch = Double.parseDouble(binding.editTextLongitudClima.getText().toString());
+        //double longitudeclimaToSearch = -77.0365256;
+        //double latitudeclimaToSearch = -18.0621068;
 
         owtmService.getClimaDetails(latitudeclimaToSearch, longitudeclimaToSearch, "8dd6fc3be19ceb8601c2c3e811c16cf1").enqueue(new Callback<ClimaDTO>() {
             @Override
             public void onResponse(Call<ClimaDTO> call, Response<ClimaDTO> response) {
                 if (response.isSuccessful()) {
                     ClimaDTO clima = response.body();
-                    navigationActivityViewModel = new ViewModelProvider(requireActivity()).get(NavigationActivityViewModel.class);
                     List<ClimaDTO> climas = navigationActivityViewModel.getClimas();
-
+                    if (climas == null) {
+                        climas = new ArrayList<>();
+                    }
                     climas.add(0, clima); // Agregar las nuevas ciudades al principio del arreglo climas
                     for (ClimaDTO c : climas) {
                         Log.d("ClimaData", "Clima: " + c.getName() + ", Latitud: " + c.getCoord().getLat() + ", Longitud: " + c.getCoord().getLon());

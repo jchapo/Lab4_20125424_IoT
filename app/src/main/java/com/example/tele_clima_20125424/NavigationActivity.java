@@ -47,7 +47,6 @@ public class NavigationActivity extends AppCompatActivity {
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(binding.fragmentContainer.getId(), new GeolocalizationFragment())
-                    .addToBackStack(null)
                     .commit();
         });
 
@@ -55,7 +54,6 @@ public class NavigationActivity extends AppCompatActivity {
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(binding.fragmentContainer.getId(), new WeatherFragment())
-                    .addToBackStack(null)
                     .commit();
         });
 

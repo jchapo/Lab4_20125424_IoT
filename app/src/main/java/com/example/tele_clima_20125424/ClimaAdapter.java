@@ -44,7 +44,11 @@ public class ClimaAdapter extends RecyclerView.Adapter<ClimaAdapter.ClimaViewHol
 
     @Override
     public int getItemCount() {
-        return climas.size();
+        if (climas == null) {
+            return 0; // O devuelve el tamaño adecuado según tu lógica
+        } else {
+            return climas.size();
+        }
     }
 
     public static class ClimaViewHolder extends RecyclerView.ViewHolder {
@@ -56,7 +60,12 @@ public class ClimaAdapter extends RecyclerView.Adapter<ClimaAdapter.ClimaViewHol
         }
 
         public void bind(ClimaDTO clima) {
-            binding.ciudadClimaTextView.setText(clima.getName());
+            if (!clima.getName().isEmpty()) {
+                binding.ciudadClimaTextView.setText(clima.getName());
+            } else {
+                binding.ciudadClimaTextView.setText("Desconocido");
+            }
+
             binding.temperaturaClimaTextView.setText(String.valueOf(clima.getMain().getTemp()));
             binding.tempMinClimaTextView.setText(String.valueOf(clima.getMain().getTemp_min()));
             binding.tempMaxClimaTextView.setText(String.valueOf(clima.getMain().getTemp_max()));

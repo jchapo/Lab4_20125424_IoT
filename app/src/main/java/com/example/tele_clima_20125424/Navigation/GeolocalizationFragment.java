@@ -34,7 +34,6 @@ public class GeolocalizationFragment extends Fragment {
     NavigationActivityViewModel navigationActivityViewModel;
 
     OWTMService owtmService;
-    List<CityDTO> cities = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,9 +45,12 @@ public class GeolocalizationFragment extends Fragment {
     }
 
     private void setupRecyclerView() {
-        cityAdapter = new CityAdapter(requireContext());
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
         binding.recyclerViewGeo.setLayoutManager(layoutManager); // Usar el layoutManager creado
+        navigationActivityViewModel = new ViewModelProvider(requireActivity()).get(NavigationActivityViewModel.class);
+        cityAdapter = new CityAdapter(getContext()); // Asegúrate de reemplazar CityAdapter con el nombre correcto de tu adaptador
+        List<CityDTO> cities = navigationActivityViewModel.getCities();
+        cityAdapter.setCities(cities); // Actualizar el adaptador con la lista actualizada de ciudades
         binding.recyclerViewGeo.setAdapter(cityAdapter);
     }
 
@@ -72,14 +74,17 @@ public class GeolocalizationFragment extends Fragment {
             public void onResponse(Call<List<CityDTO>> call, Response<List<CityDTO>> response) {
                 if (response.isSuccessful()) {
                     List<CityDTO> city = response.body();
-                    navigationActivityViewModel = new ViewModelProvider(requireActivity()).get(NavigationActivityViewModel.class);
-                    List<ClimaDTO> climas = navigationActivityViewModel.getClimas();
+                    List<CityDTO> cities = navigationActivityViewModel.getCities();
+                    if (cities == null) {
+                        cities = new ArrayList<>();
+                    }
                     cities.addAll(0, city); // Agregar las nuevas ciudades al principio del arreglo cities
                     for (CityDTO c : cities) {
                         Log.d("CityData", "City: " + c.getName() + ", Latitud: " + c.getLat() + ", Longitud: " + c.getLon());
                     }
                     if (city != null && !city.isEmpty()) {
                         cityAdapter.setCities(cities); // Actualizar el adaptador con la lista actualizada de ciudades
+                        navigationActivityViewModel.setCities(cities);
                     } else {
                         Toast.makeText(requireContext(), "No se encontraron datos para esa ciudad", Toast.LENGTH_SHORT).show();
                     }

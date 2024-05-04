@@ -45,7 +45,11 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
 
     @Override
     public int getItemCount() {
-        return cities.size();
+        if (cities == null) {
+            return 0; // O devuelve el tamaño adecuado según tu lógica
+        } else {
+            return cities.size();
+        }
     }
 
     public static class CityViewHolder extends RecyclerView.ViewHolder {
