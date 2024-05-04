@@ -188,6 +188,15 @@ public class ClimaDTO {
     public static class Wind {
         private double speed;
         private int deg;
+        private String direction;
+
+        public String getDirection() {
+            return direction;
+        }
+
+        public void setDirection(String direction) {
+            this.direction = direction;
+        }
 
         public double getSpeed() {
             return speed;

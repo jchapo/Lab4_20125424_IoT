@@ -1,11 +1,8 @@
 package com.example.tele_clima_20125424.Navigation;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.tele_clima_20125424.CityAdapter;
+import com.example.tele_clima_20125424.AccEventListener;
 import com.example.tele_clima_20125424.databinding.FragmentGeolocalizationBinding;
 import com.example.tele_clima_20125424.dto.CityDTO;
 import com.example.tele_clima_20125424.services.OWTMService;
@@ -34,7 +32,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class GeolocalizationFragment extends Fragment implements SensorEventListener {
+public class GeolocalizationFragment extends Fragment {
 
     private static final float UMBRAL_ACCELERACION = 15.0f; // Umbral de aceleración en m/s^2
 
@@ -43,8 +41,8 @@ public class GeolocalizationFragment extends Fragment implements SensorEventList
     private NavigationActivityViewModel navigationActivityViewModel;
     private OWTMService owtmService;
     private SensorManager sensorManager;
+    private AccEventListener sensorEventListener;
     private boolean isDialogVisible = false;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,6 +52,14 @@ public class GeolocalizationFragment extends Fragment implements SensorEventList
         setupButton();
         createRetrofitService();
         sensorManager = (SensorManager) requireActivity().getSystemService(Context.SENSOR_SERVICE);
+        sensorEventListener = new AccEventListener(new AccEventListener.SensorListenerCallback() {
+            @Override
+            public void onAccelerationChanged(float accelerationTotal) {
+                if (accelerationTotal > UMBRAL_ACCELERACION && !isDialogVisible) {
+                    mostrarDialogoDeshacer();
+                }
+            }
+        });
         return binding.getRoot();
     }
 
@@ -72,12 +78,12 @@ public class GeolocalizationFragment extends Fragment implements SensorEventList
     private void registerAccelerometerListener() {
         Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         if (accelerometer != null) {
-            sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+            sensorManager.registerListener(sensorEventListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         }
     }
 
     private void unregisterAccelerometerListener() {
-        sensorManager.unregisterListener(this);
+        sensorManager.unregisterListener(sensorEventListener);
     }
 
     private void setupRecyclerView() {
@@ -92,12 +98,20 @@ public class GeolocalizationFragment extends Fragment implements SensorEventList
 
     private void setupButton() {
         binding.botonBuscarGeolocalizacion.setOnClickListener(v -> {
-            binding.botonBuscarGeolocalizacion.setEnabled(false);
-            navigationActivityViewModel.setEnableNavigation(false);
-            cargarListaWebService();
-            binding.editTextCiudad.setText("");
+            String ciudad = binding.editTextCiudad.getText().toString().trim();
+            if (!ciudad.isEmpty()) {
+                binding.botonBuscarGeolocalizacion.setEnabled(false);
+                navigationActivityViewModel.setEnableNavigation(false);
+                cargarListaWebService();
+                binding.editTextCiudad.setText("");
+                binding.editTextCiudad.requestFocus();
+            } else {
+                binding.editTextCiudad.requestFocus();
+                Toast.makeText(requireContext(), "Por favor ingresa el nombre de una ciudad", Toast.LENGTH_SHORT).show();
+            }
         });
     }
+
 
     public void createRetrofitService() {
         Retrofit retrofit = new Retrofit.Builder()
@@ -144,23 +158,6 @@ public class GeolocalizationFragment extends Fragment implements SensorEventList
         });
     }
 
-    @Override
-    public void onSensorChanged(SensorEvent sensorEvent) {
-        int sensorType = sensorEvent.sensor.getType();
-
-        if (sensorType == Sensor.TYPE_ACCELEROMETER) {
-            float x = sensorEvent.values[0];
-            float y = sensorEvent.values[1];
-            float z = sensorEvent.values[2];
-
-            float aceleracionTotal = (float) Math.sqrt(x * x + y * y + z * z);
-
-            if (aceleracionTotal > UMBRAL_ACCELERACION && !isDialogVisible) {
-                mostrarDialogoDeshacer();
-            }
-        }
-    }
-
     private void mostrarDialogoDeshacer() {
         isDialogVisible = true;
         new MaterialAlertDialogBuilder(requireContext())
@@ -189,11 +186,6 @@ public class GeolocalizationFragment extends Fragment implements SensorEventList
                 .show();
     }
 
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {
-        // No se utiliza en este caso
-    }
-
     private void eliminarUltimaCiudad() {
         List<CityDTO> cities = navigationActivityViewModel.getCities();
         if (cities != null && !cities.isEmpty()) {
@@ -202,5 +194,4 @@ public class GeolocalizationFragment extends Fragment implements SensorEventList
             navigationActivityViewModel.setCities(cities);
         }
     }
-
 }

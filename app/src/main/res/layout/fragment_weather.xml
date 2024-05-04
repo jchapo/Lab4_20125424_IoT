@@ -39,7 +39,10 @@
         android:paddingEnd="16dp"
         android:paddingTop="8dp"
         android:layout_marginEnd="16dp"
-        android:paddingBottom="8dp"/>
+        android:paddingBottom="8dp"
+        android:inputType="numberDecimal|numberSigned"
+        android:imeOptions="actionNext"/>
+
     <EditText
         android:id="@+id/editTextLatitudClima"
         android:layout_width="0dp"
@@ -52,7 +55,10 @@
         android:paddingEnd="16dp"
         android:paddingTop="8dp"
         android:layout_marginEnd="16dp"
-        android:paddingBottom="8dp"/>
+        android:paddingBottom="8dp"
+        android:inputType="numberDecimal|numberSigned"
+        android:imeOptions="actionDone"/>
+
     <!-- Button -->
     <Button
         android:id="@+id/botonBuscarClima"
