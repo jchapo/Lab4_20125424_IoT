@@ -11,6 +11,15 @@ public class CityDTO {
     private double lon;
     private String country;
     private String state;
+    private String countryFlagEmoji;
+
+    public String getCountryFlagEmoji() {
+        return countryFlagEmoji;
+    }
+
+    public void setCountryFlagEmoji(String countryFlagEmoji) {
+        this.countryFlagEmoji = countryFlagEmoji;
+    }
 
     public String getName() {
         return name;

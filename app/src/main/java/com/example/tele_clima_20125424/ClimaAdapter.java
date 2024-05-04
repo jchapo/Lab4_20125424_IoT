@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tele_clima_20125424.databinding.ItemClimaBinding;
 import com.example.tele_clima_20125424.dto.ClimaDTO;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +67,7 @@ public class ClimaAdapter extends RecyclerView.Adapter<ClimaAdapter.ClimaViewHol
                 binding.ciudadClimaTextView.setText("Desconocido");
             }
 
+            Picasso.get().load(clima.getWeatherIconUrl()).into(binding.weatherIconImageView);
             binding.temperaturaClimaTextView.setText(String.valueOf(clima.getMain().getTemp())+" K");
             binding.tempMinClimaTextView.setText(String.valueOf(clima.getMain().getTemp_min())+" K");
             binding.tempMaxClimaTextView.setText(String.valueOf(clima.getMain().getTemp_max())+" K");

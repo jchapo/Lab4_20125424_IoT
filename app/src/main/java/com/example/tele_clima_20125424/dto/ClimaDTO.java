@@ -10,6 +10,15 @@ public class ClimaDTO {
     private Sys sys;
     private int id;
     private String name;
+    private String weatherIconUrl; // Nuevo campo para la URL de la imagen del clima
+
+    public String getWeatherIconUrl() {
+        return weatherIconUrl;
+    }
+
+    public void setWeatherIconUrl(String weatherIconUrl) {
+        this.weatherIconUrl = weatherIconUrl;
+    }
 
     public Coord getCoord() {
         return coord;

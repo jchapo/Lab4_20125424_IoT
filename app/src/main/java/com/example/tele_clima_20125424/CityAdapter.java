@@ -62,6 +62,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
 
         public void bind(CityDTO city) {
             binding.ciudadTextView.setText(city.getName());
+            binding.emojiTextView.setText(city.getCountryFlagEmoji());
             binding.latitudTextView.setText(String.valueOf(city.getLat()));
             binding.longitudeTextView.setText(String.valueOf(city.getLon()));
         }

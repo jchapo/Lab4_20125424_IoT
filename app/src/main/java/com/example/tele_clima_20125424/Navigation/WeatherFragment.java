@@ -93,23 +93,24 @@ public class WeatherFragment extends Fragment {
 
     private String getDirection(double degrees) {
         if ((degrees >= 337.5 && degrees <= 360) || (degrees >= 0 && degrees < 22.5)) {
-            return "Norte";
-        } else if (degrees >= 22.5 && degrees < 67.5) {
-            return "Noreste";
-        } else if (degrees >= 67.5 && degrees < 112.5) {
-            return "Este";
-        } else if (degrees >= 112.5 && degrees < 157.5) {
-            return "Sureste";
-        } else if (degrees >= 157.5 && degrees < 202.5) {
-            return "Sur";
-        } else if (degrees >= 202.5 && degrees < 247.5) {
-            return "Suroeste";
-        } else if (degrees >= 247.5 && degrees < 292.5) {
             return "Oeste";
-        } else {
+        } else if (degrees >= 22.5 && degrees < 67.5) {
             return "Noroeste";
+        } else if (degrees >= 67.5 && degrees < 112.5) {
+            return "Norte";
+        } else if (degrees >= 112.5 && degrees < 157.5) {
+            return "Noreste";
+        } else if (degrees >= 157.5 && degrees < 202.5) {
+            return "Este";
+        } else if (degrees >= 202.5 && degrees < 247.5) {
+            return "Sureste";
+        } else if (degrees >= 247.5 && degrees < 292.5) {
+            return "Sur";
+        } else {
+            return "Suroeste";
         }
     }
+
 
 
 
@@ -174,6 +175,8 @@ public class WeatherFragment extends Fragment {
                     }
                     if (clima != null) {
                         clima.getWind().setDirection(direction);
+                        String icon = clima.getWeather().get(0).getIcon();
+                        clima.setWeatherIconUrl("https://openweathermap.org/img/wn/" + icon + "@4x.png"); // Guardar la URL del icono del clima
                         climas.add(0, clima);
                         climaAdapter.setClimas(climas);
                         navigationActivityViewModel.setClimas(climas);

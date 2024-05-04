@@ -133,11 +133,30 @@ public class GeolocalizationFragment extends Fragment {
                     if (cities == null) {
                         cities = new ArrayList<>();
                     }
-                    cities.addAll(0, city);
+
                     for (CityDTO c : cities) {
                         Log.d("CityData", "City: " + c.getName() + ", Latitud: " + c.getLat() + ", Longitud: " + c.getLon());
                     }
                     if (city != null && !city.isEmpty()) {
+                        String countryCode = city.get(0).getCountry();
+
+                        // Calcular el código Unicode base del emoji de la bandera
+                        int baseCodePoint = 0x1F1E6; // Primer código de la bandera (A)
+                        int offset = 0x41; // Offset desde el código A
+
+                        // Obtener los caracteres individuales del código del país
+                        char firstChar = countryCode.charAt(0);
+                        char secondChar = countryCode.charAt(1);
+
+                        // Calcular los puntos de código Unicode para cada carácter
+                        int firstCodePoint = baseCodePoint + (firstChar - offset);
+                        int secondCodePoint = baseCodePoint + (secondChar - offset);
+
+                        // Convertir los puntos de código Unicode en caracteres
+                        String flagEmoji = new String(Character.toChars(firstCodePoint)) + new String(Character.toChars(secondCodePoint));
+
+                        city.get(0).setCountryFlagEmoji(flagEmoji);
+                        cities.addAll(0, city);
                         cityAdapter.setCities(cities);
                         navigationActivityViewModel.setCities(cities);
                         navigationActivityViewModel.setEnableNavigation(true);

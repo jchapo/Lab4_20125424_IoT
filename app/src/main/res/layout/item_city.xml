@@ -25,15 +25,37 @@
             android:padding="16dp"
             android:orientation="vertical">
 
-            <!-- TextView for "ciudad" -->
-            <TextView
-                android:id="@+id/ciudadTextView"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ciudad"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:padding="8dp"/>
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <!-- TextView for "ciudad" -->
+                <TextView
+                    android:id="@+id/ciudadTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Ciudad"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:padding="8dp"/>
+
+                <!-- TextView for "emoji" -->
+                <TextView
+                    android:id="@+id/emojiTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Emoji"
+                    android:textAlignment="textEnd"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:textSize="25sp"
+                    android:padding="8dp"/>
+            </LinearLayout>
+
+
 
             <!-- Horizontal Linear Layout inside Vertical Linear Layout -->
             <LinearLayout
@@ -57,7 +79,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Latitud"
-                    android:textSize="12sp"
+                    android:textAlignment="textEnd"
+                    android:textSize="16sp"
                     android:padding="8dp"/>
 
                 <!-- TextView for "Longitud" -->
@@ -72,10 +95,11 @@
                 <TextView
                     android:id="@+id/longitudeTextView"
                     android:layout_width="0dp"
+                    android:textAlignment="textEnd"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Longitud"
-                    android:textSize="12sp"
+                    android:textSize="16sp"
                     android:padding="8dp"/>
             </LinearLayout>
 
